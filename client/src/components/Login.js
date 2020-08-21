@@ -1,12 +1,50 @@
-import React from "react";
+import React, { useState } from "react"
+import { useHistory } from 'react-router-dom'
+import { axiosWithAuth } from '../utils/axiosWithAuth'
 
 const Login = () => {
-  // make a post request to retrieve a token from the api
-  // when you have handled the token, navigate to the BubblePage route
+
+  const history = useHistory()
+
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: ''
+  })
+
+  const [isFetching, setIsFetching] = useState(false)
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setCredentials({
+      ...credentials,
+      [name]: value
+    })
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    setIsFetching(true)
+    axiosWithAuth()
+      .post('/api/login', credentials)
+      .then(res => {
+        localStorage.setItem('token', res.data.payload)
+        setIsFetching(false)
+        history.push('/bubbles')
+      })
+      .catch(err => {
+        setIsFetching(false)
+        console.log(err)
+      })
+  }
+
   return (
     <>
-      <h1>Welcome to the Bubble App!</h1>
-      <p>Build a login page here</p>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <input onChange={handleChange} type="text" name="username" placeholder="username" />
+        <input onChange={handleChange} type="password" name="password" placeholder="password" />
+        <button>{isFetching ? "fetching..." : "Login"}</button>
+      </form>
     </>
   );
 };
