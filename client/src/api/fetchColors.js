@@ -1,9 +1,7 @@
-import axios from 'axios'
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 export const fetchColors = () => {
-    return axios
-        .get(
-            'localhost:5000/api/colors'
-        )
+    return axiosWithAuth()
+        .get('/api/colors')
         .then(res => res);
 }

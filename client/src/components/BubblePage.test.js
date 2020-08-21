@@ -87,12 +87,11 @@ let colorsData = {
     ]
 }
 
-test("Fetches data and renders the bubbles", () => {
+test("Fetches data and renders the bubbles", async () => {
     mockFetchColors.mockResolvedValueOnce(colorsData)
 
-    const { rerender, getByText } = render(<BubblePage />)
-
-    rerender(<BubblePage />)
-
+    const { rerender, getByText, debug } = render(<BubblePage />)
+    await waitFor(() => expect(getByText('aliceblue')).toBeInTheDocument())
+    debug()
 });
 
