@@ -18,7 +18,7 @@ const BubblePage = () => {
       .catch(err => {
         console.log(err.message)
       })
-  }, [colorList])
+  }, [])
 
   return (
     <>
